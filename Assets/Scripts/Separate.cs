@@ -39,5 +39,5 @@ public class Separate : AIBehavior
 
     return Vector2.zero;
 }
-    public override void draw(GameObject target){}
+	public override void draw(GameObject target){flee.draw (target);}
 }

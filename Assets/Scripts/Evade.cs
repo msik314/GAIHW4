@@ -41,3 +41,8 @@ public class Evade : AIBehavior {
         flee.draw(target);
     }
 }
+	
+//hi david its sera im coding your code
+
+//jhfsllaksidjjfknlanmakjlsnlknddoajhsddnkjskljnajjskdljjnnm,sopwijeiiurl8989929001-04384892jjnfjnsljnjbflnj
+//it was cvery dark thats intense was there cahnting DING DONG DING DONG who is that axel is a flamingo oh its max hi max i guess he didnt eat anything and will be staying for dinner :/ ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS ASS hack the world HACK MAINFRAME HACK HACK HACK HACK HACK HACK ASS; HACKK ASSSSSSSSS

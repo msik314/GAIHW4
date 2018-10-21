@@ -17,11 +17,15 @@ public class FlockScript : MonoBehaviour
     [SerializeField] private float maxAlpha;
     [SerializeField] private float timeToTarget;
     [SerializeField] private float separateCastRadius;
+	[SerializeField] private float avoidCastDistance;
+	[SerializeField] private float rayCastOffset;
+	[SerializeField] private float rayAvoidDistance;
     [SerializeField][Range(0, 1)] private float[] weights;
 
     private AIBehavior follow;
     private AIBehavior congregate;
     private AIBehavior separate;
+	private AIBehavior rayAvoid;
     private Vector2 leaderPos;
     private Vector2 cgPos;
     private Rigidbody2D rb;
@@ -36,7 +40,8 @@ public class FlockScript : MonoBehaviour
         face = new Face(transform, targetDistance, slowDistance, maxOmega, maxAlpha, timeToTarget);
         congregate = new Arrive(transform, slowRadius, targetRadius, accelTime,  maxSpeed, maxAccel);
         separate = new Separate(transform, maxAccel, separateCastRadius);
-        cg = FindObjectOfType<CGScript>().gameObject;
+		rayAvoid = new AvoidRay (transform, maxAccel, avoidCastDistance, rayCastOffset, rayAvoidDistance, maxSpeed, accelTime);
+		cg = FindObjectOfType<CGScript>().gameObject;
     }
 
     void Update()
@@ -53,7 +58,11 @@ public class FlockScript : MonoBehaviour
         Vector2 sepForce = separate.get(Vector2.zero, rb.velocity);
         Debug.DrawRay(transform.position, sepForce, Color.red);
 
-        Vector2 force = pursueForce * weights[0] + cgForce * weights[1] + sepForce * weights[2]; 
+        Vector2 force = pursueForce * weights[0] + cgForce * weights[1] + sepForce * weights[2];
+		Vector2 hitAvoid = rayAvoid.get (Vector2.zero, rb.velocity);
+		if (hitAvoid.sqrMagnitude > 0.01) {
+			force = hitAvoid;
+		}
 
         rb.AddForce(force);
         if(rb.velocity.magnitude > maxSpeed)
