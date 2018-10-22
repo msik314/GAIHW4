@@ -41,4 +41,9 @@ public class Pursue : AIBehavior
     {
         arrive.draw(target);
     }
+
+	public Arrive getArrive()
+	{
+		return arrive;
+	}
 }

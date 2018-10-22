@@ -16,7 +16,8 @@ public class FormationManager : MonoBehaviour
     [SerializeField] private float radiusBias = 0.5f;
 	[SerializeField] private List<GameObject> birds;
     
-    GameObject leader;
+	GameObject leader;
+	Formation leaderFormation;
 
     public static FormationType formation{get; private set;}
 	void Awake()
@@ -46,7 +47,12 @@ public class FormationManager : MonoBehaviour
     public void setLeader()
     {
         leader = birds[0];
-        Formation f = leader.GetComponent<Formation>();
-        f.setLeader();
+		leaderFormation = leader.GetComponent<FormationBehavior>().getFormation();
+		leaderFormation.setLeader();
     }
+
+	public Vector2 getVel()
+	{
+		return leaderFormation.getVel();
+	}
 }

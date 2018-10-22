@@ -4,8 +4,21 @@ using UnityEngine;
 
 public class Formation : AIBehavior
 {
-    private Pursue pursue;
+	private AIBehavior behavior;
     private FormationManager manager;
+	private float pathFollowDistance;
+	private Vector2[] path;
+	private Rigidbody2D rb;
+
+	public Formation(Transform owned, float accelTime, float maxSpeed, float maxAccel, float maxPredict, float pathFollowDistance, Vector2[] path, Rigidbody2D rb)
+	{
+		behavior = new Pursue(owned, 0, 0, accelTime, maxSpeed, maxAccel, maxPredict);
+		manager = Object.FindObjectOfType<FormationManager> ();
+		this.pathFollowDistance = pathFollowDistance;
+		this.path = path;
+		this.owned = owned;
+		this.rb = rb;
+	}
 
     void Awake()
     {
@@ -14,12 +27,15 @@ public class Formation : AIBehavior
     
     public override Vector2 get(Vector2 target, Vector2 currentVelocity, Vector2 targetVelocity = new Vector2())
     {
-        return pursue.get(manager.getTarget(owned.gameObject), currentVelocity, targetVelocity);
+		if (behavior is Pursue || behavior is PathFollow) {
+			behavior.get (manager.getTarget (owned.gameObject), currentVelocity, manager.getVel());
+		}
+		return Vector2.zero;
     }
 
     public override void draw(GameObject target)
     {
-        pursue.draw(target);
+		behavior.draw(target);
     }
 
     public bool isLeader{get; private set;}
@@ -27,5 +43,11 @@ public class Formation : AIBehavior
     public void setLeader()
     {
         isLeader = true;
+		behavior = new PathFollow (((Pursue)behavior).getArrive(), pathFollowDistance, path);
     }
+
+	public Vector2 getVel()
+	{
+		return rb.velocity;
+	}
 }
