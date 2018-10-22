@@ -27,10 +27,7 @@ public class Formation : AIBehavior
     
     public override Vector2 get(Vector2 target, Vector2 currentVelocity, Vector2 targetVelocity = new Vector2())
     {
-		if (behavior is Pursue || behavior is PathFollow) {
-			behavior.get (manager.getTarget (owned.gameObject), currentVelocity, manager.getVel());
-		}
-		return Vector2.zero;
+		return behavior.get (manager.getTarget (owned.gameObject), currentVelocity, manager.getVel());
     }
 
     public override void draw(GameObject target)

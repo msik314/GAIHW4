@@ -18,7 +18,7 @@ public class AvoidRay : AIBehavior
 		this.castOffset = castOffset;
 		this.rayAvoidDistance = rayAvoidDistance;
 		this.arrive = new Arrive(owned, 0, 0, accelTime, maxSpeed, maxAccel);
-		this.tagCompare = tagCompare;
+		this.tagCompare = null;
 	}
 
 	public override Vector2 get(Vector2 target, Vector2 currentVelocity, Vector2 targetVelocity = new Vector2())

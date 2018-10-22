@@ -37,8 +37,12 @@ public class FormationManager : MonoBehaviour
             int index = birds.IndexOf(obj);
             if(index < 0) return obj.transform.position;
 
-            Vector2 center = leader.transform.position - leader.transform.forward * (radiusScale * birds.Count + radiusBias);
-            return center + (Vector2)(Quaternion.AngleAxis(index * 360.0f/birds.Count, Vector3.zero) * (leader.transform.position - (Vector3)center));
+            Vector2 center = leader.transform.position - leader.transform.right * (radiusScale * birds.Count + radiusBias);
+            Vector2 res =  leader.transform.right * (radiusScale * birds.Count + radiusBias);
+            res = Quaternion.Euler(0, 0, 360.0f/birds.Count * index) * res;
+            res = res + center;
+            Debug.DrawLine(center, res, Color.yellow);
+            return res;
         }
 
         return obj.transform.position;

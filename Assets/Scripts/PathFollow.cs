@@ -91,6 +91,9 @@ public class PathFollow : AIBehavior
             }
         }
         
+        Debug.DrawLine(owned.position, path[index], Color.green);
+        Debug.DrawLine(owned.position, path[secondIndex], Color.green);
+
         Vector2 objectDirection = (Vector2)owned.position - path[index];
         Vector2 pathDirection = path[secondIndex] - path[index];
         float len = Vector2.Dot(objectDirection, pathDirection) / pathDirection.magnitude;
