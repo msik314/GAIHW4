@@ -57,11 +57,17 @@ public class FormationManager : MonoBehaviour
         return obj.transform.position;
     }
 
-    public void setLeader()
+    void setLeader()
     {
         leader = birds[0];
 		leaderFormation = leader.GetComponent<FormationBehavior>().getFormation();
 		leaderFormation.setLeader();
+    }
+
+    public void KillLeader()
+    {
+        birds.RemoveAt(0);
+        setLeader();
     }
 
 	public Vector2 getVel()

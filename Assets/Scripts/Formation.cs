@@ -69,6 +69,10 @@ public class Formation : AIBehavior
     {
         parent?.setChild(child);
         child?.setParent(parent);
+        if(isLeader)
+        {
+            manager.KillLeader();
+        }
     }
 
 	public Vector2 getVel()
