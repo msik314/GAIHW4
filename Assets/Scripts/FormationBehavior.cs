@@ -29,7 +29,7 @@ public class FormationBehavior : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 		formation = new Formation (transform, accelTime, maxSpeed, maxAccel, maxPredict, pathFollowDistance, pathPoints, rb);
 		rayAvoid = new AvoidRay (transform, maxAccel, castRadius, castOffset, rayAvoidDistance, maxSpeed, accelTime);
-		face = new Face (transform, 0.05f, 0.1f, maxOmega, maxAlpha, accelTime); 
+		face = new Face (transform, 0.05f, 0.1f, maxOmega, maxAlpha, accelTime);
 	}
 	
 	// Update is called once per frame
@@ -57,6 +57,11 @@ public class FormationBehavior : MonoBehaviour {
 			rb.angularVelocity = Mathf.Sign(rb.angularVelocity) * maxOmega * Mathf.Rad2Deg;
 		}
 	}
+
+    void OnDestroy()
+    {
+        formation.kill();
+    }
 
 	public Formation getFormation()
 	{

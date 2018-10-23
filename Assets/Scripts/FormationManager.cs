@@ -14,6 +14,7 @@ public class FormationManager : MonoBehaviour
     [SerializeField] private FormationType startingFormation = FormationType.Scalable;
     [SerializeField] private float radiusScale = 0.16666666f;
     [SerializeField] private float radiusBias = 0.5f;
+    [SerializeField] private float emergentSeparation = 0.75f;
 	[SerializeField] private List<GameObject> birds;
     
 	GameObject leader;
@@ -28,6 +29,14 @@ public class FormationManager : MonoBehaviour
     void Start()
     {
         setLeader();
+        for(int i = 1; i < birds.Count; ++i)
+        {
+            Formation current = birds[i].GetComponent<FormationBehavior>().getFormation();
+            Formation previous = birds[i - 1].GetComponent<FormationBehavior>().getFormation();
+
+            current.setParent(previous);
+            previous.setChild(current);
+        }
     }
 
     public Vector2 getTarget(GameObject obj)
@@ -59,4 +68,9 @@ public class FormationManager : MonoBehaviour
 	{
 		return leaderFormation.getVel();
 	}
+
+    public float getSeparation()
+    {
+        return emergentSeparation;
+    }
 }
