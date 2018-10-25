@@ -15,6 +15,8 @@ public class FormationManager : MonoBehaviour
     [SerializeField] private float radiusScale = 0.16666666f;
     [SerializeField] private float radiusBias = 0.5f;
     [SerializeField] private float emergentSeparation = 0.75f;
+    [SerializeField] private float slowDownRadius = 0.5f;
+    [SerializeField] private float slowScale = 0.5f;
 	[SerializeField] private List<GameObject> birds;
     
 	GameObject leader;
@@ -25,6 +27,11 @@ public class FormationManager : MonoBehaviour
     {
 		formation = startingFormation;
 	}
+
+    void Update()
+    {
+        formation = startingFormation;
+    }
 
     void Start()
     {
@@ -57,6 +64,20 @@ public class FormationManager : MonoBehaviour
         return obj.transform.position;
     }
 
+    public float getSlowdown()
+    {
+        int slowedCount = 0;
+        for(int i = 1; i < birds.Count; ++i)
+        {
+            if(((Vector2)birds[i].transform.position - getTarget(birds[i])).sqrMagnitude > slowDownRadius * slowDownRadius)
+            {
+                ++slowedCount;
+            }
+        }
+
+        return 1.0f - (float)(slowedCount) / (birds.Count - 1) * slowScale;
+    }
+
     void setLeader()
     {
         leader = birds[0];
@@ -64,9 +85,9 @@ public class FormationManager : MonoBehaviour
 		leaderFormation.setLeader();
     }
 
-    public void KillLeader()
+    public void Kill(GameObject go)
     {
-        birds.RemoveAt(0);
+        birds.Remove(go);
         setLeader();
     }
 

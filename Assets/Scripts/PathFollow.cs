@@ -117,13 +117,20 @@ public class PathFollow : AIBehavior
         secondIndex = index + 1;
         
         len = (getOrLast(index) - target).magnitude;
+
+        Vector2 arriveTarget; 
+
         if(len > followDistance)
         {
-            return arrive.get(distanceLerp(target, getOrLast(index), followDistance), currentVelocity);
+            arriveTarget = distanceLerp(target, getOrLast(index), followDistance);
         }
-        len = followDistance - len;
-        return arrive.get(distanceLerp(getOrLast(index), getOrLast(secondIndex), len), currentVelocity);
-
+        else
+        {
+            len = followDistance - len;
+            arriveTarget = distanceLerp(getOrLast(index), getOrLast(secondIndex), len);
+        }
+        Debug.DrawLine(owned.position, arriveTarget, Color.cyan);
+        return arrive.get(arriveTarget, currentVelocity);
     }
     
     public override void draw(GameObject target)

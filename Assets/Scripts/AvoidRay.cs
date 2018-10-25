@@ -65,9 +65,11 @@ public class AvoidRay : AIBehavior
 			return Vector2.zero;
 		}
 
-		Debug.DrawLine(owned.position, hit.point + hit.normal * rayAvoidDistance, Color.green, 0);
+		
 
-		return arrive.get(hit.point + hit.normal * rayAvoidDistance, currentVelocity);
+        Vector2 centerOffset = hit == hits[0] ? -horiz * castOffset : horiz * castOffset;
+        Debug.DrawLine(owned.position, hit.point + centerOffset + hit.normal * rayAvoidDistance, Color.green, 0);
+		return arrive.get(hit.point + centerOffset + hit.normal * rayAvoidDistance, currentVelocity);
 
 	}
 

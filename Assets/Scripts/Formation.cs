@@ -69,10 +69,7 @@ public class Formation : AIBehavior
     {
         parent?.setChild(child);
         child?.setParent(parent);
-        if(isLeader)
-        {
-            manager.KillLeader();
-        }
+        manager.Kill(owned.gameObject);
     }
 
 	public Vector2 getVel()
@@ -98,5 +95,17 @@ public class Formation : AIBehavior
     public Vector2 getForward()
     {
         return owned.forward;
+    }
+
+    public void AdjustSpeed(float maxSpeed)
+    {
+        if(isLeader)
+        {
+            pursue.getArrive().setMaxSpeed(maxSpeed * manager.getSlowdown());
+        }
+        else
+        {
+            pursue.getArrive().setMaxSpeed(maxSpeed);
+        }
     }
 }

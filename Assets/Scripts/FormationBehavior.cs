@@ -37,7 +37,9 @@ public class FormationBehavior : MonoBehaviour {
 		
 	}
 
-	void FixedUpdate(){
+	void FixedUpdate()
+    {
+        formation.AdjustSpeed(maxSpeed);
 		Vector2 force = formation.get(Vector2.zero, rb.velocity);
 		Vector2 hitAvoid = rayAvoid.get (Vector2.zero, rb.velocity);
 		if (hitAvoid.sqrMagnitude > 0.01) {

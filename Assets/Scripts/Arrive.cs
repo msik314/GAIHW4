@@ -52,6 +52,11 @@ public class Arrive : AIBehavior
         target.transform.position = this.target;
     }
     
+    public void setMaxSpeed(float speed)
+    {
+        maxSpeed = speed;
+    }
+
     public Vector2 pos {get {return new Vector2(owned.position.x, owned.position.y);}}
     public Transform tf {get{return owned;}}
 }
