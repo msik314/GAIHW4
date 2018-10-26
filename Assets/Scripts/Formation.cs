@@ -11,6 +11,7 @@ public class Formation : AIBehavior
 	private Rigidbody2D rb;
     private Formation parent;
     private Formation child;
+    private FormationType type;
 
 	public Formation(Transform owned, float accelTime, float maxSpeed, float maxAccel, float maxPredict, float pathFollowDistance, Vector2[] path, Rigidbody2D rb)
 	{
@@ -26,9 +27,13 @@ public class Formation : AIBehavior
     
     public override Vector2 get(Vector2 target, Vector2 currentVelocity, Vector2 targetVelocity = new Vector2())
     {
-        if(FormationManager.formation != FormationType.Emergent || isLeader)
+        if(type == FormationType.TwoLevel)
         {
-		    return behavior.get(manager.getTarget (owned.gameObject), currentVelocity, manager.getVel());
+            return pursue.get(manager.getTarget (owned.gameObject, this), currentVelocity, manager.getVel(this));
+        }
+        else if(type != FormationType.Emergent || isLeader)
+        {
+		    return behavior.get(manager.getTarget (owned.gameObject, this), currentVelocity, manager.getVel(this));
         }
 
         Vector2 vel = parent.getVel();
@@ -44,6 +49,11 @@ public class Formation : AIBehavior
         }
 
         return pursue.get(parent.getPos() - manager.getSeparation() * direction, currentVelocity, parent.getVel());
+    }
+
+    public void setType(FormationType type)
+    {
+        this.type = type;
     }
 
     public override void draw(GameObject target)
@@ -69,7 +79,7 @@ public class Formation : AIBehavior
     {
         parent?.setChild(child);
         child?.setParent(parent);
-        manager.Kill(owned.gameObject);
+        manager.Kill(owned.gameObject, this);
     }
 
 	public Vector2 getVel()
@@ -97,11 +107,16 @@ public class Formation : AIBehavior
         return owned.forward;
     }
 
+    public GameObject getObject()
+    {
+        return owned.gameObject;
+    }
+
     public void AdjustSpeed(float maxSpeed)
     {
-        if(isLeader)
+        if(isLeader || type == FormationType.TwoLevel)
         {
-            pursue.getArrive().setMaxSpeed(maxSpeed * manager.getSlowdown());
+            pursue.getArrive().setMaxSpeed(maxSpeed * manager.getSlowdown(this));
         }
         else
         {
