@@ -21,7 +21,7 @@ public class FormationManager : MonoBehaviour
     [SerializeField] private float slowScale = 0.5f;
     [SerializeField] private float groupSacing = 2;
 	[SerializeField] private List<GameObject> birds;
-    [SerializeField] private GameObject invisLeader;
+    [SerializeField] private InvisLeader invisLeader;
     
 	private GameObject leader;
 	private Formation leaderFormation;
@@ -93,7 +93,7 @@ public class FormationManager : MonoBehaviour
             Vector2 forward;
             if(flIndex == 0)
             {
-                forward = invisLeader.transform.right;
+                forward = invisLeader.getForward();
                 center = (Vector2)invisLeader.transform.position - groupSacing * forward;
             }
             else
@@ -120,20 +120,26 @@ public class FormationManager : MonoBehaviour
         return obj.transform.position;
     }
 
+    public float getTotalSlowdown(float scale)
+    {
+        int slowedCount = 0;
+        for(int i = 1; i < birds.Count; ++i)
+        {
+            if(((Vector2)birds[i].transform.position - getTarget(birds[i], null)).sqrMagnitude > slowDownRadius * slowDownRadius)
+            {
+                ++slowedCount;
+            }
+        }
+
+        return 1.0f - (float)(slowedCount) / Mathf.Max(birds.Count - 1, 1) * scale;
+    }
+
     public float getSlowdown(Formation fObj)
     {
         int slowedCount = 0;
         if(_formation != FormationType.TwoLevel)
         {
-            for(int i = 1; i < birds.Count; ++i)
-            {
-                if(((Vector2)birds[i].transform.position - getTarget(birds[i], null)).sqrMagnitude > slowDownRadius * slowDownRadius)
-                {
-                    ++slowedCount;
-                }
-            }
-
-            return 1.0f - (float)(slowedCount) / Mathf.Max(birds.Count - 1, 1) * slowScale;
+            return getTotalSlowdown(slowScale);
         }
         else
         {
@@ -205,7 +211,7 @@ public class FormationManager : MonoBehaviour
             }
             if(flIndex == 0)
             {
-                return invisLeader.transform.forward * leaderFormation.getVel().magnitude;
+                return invisLeader.getVel();
             }
             else
             {

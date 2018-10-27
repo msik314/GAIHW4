@@ -6,6 +6,7 @@ public class PathFollow : AIBehavior
 {
     private Arrive arrive;
     private float followDistance;
+    private float maxSpeed;
     private Vector2[] path;
     
     //Using arrive as opposed to seek in case path ends.
@@ -15,6 +16,7 @@ public class PathFollow : AIBehavior
         this.owned = owned;
         this.followDistance = followDistance;
         this.path = path;
+        this.maxSpeed = maxSpeed;
     }
     
     //Seek like behavior with arrive
@@ -24,6 +26,7 @@ public class PathFollow : AIBehavior
         this.owned = owned;
         this.followDistance = followDistance;
         this.path = path;
+        this.maxSpeed = maxSpeed;
     }
     
     public PathFollow(Arrive arrive, float followDistance, Vector2[] path)
@@ -151,5 +154,10 @@ public class PathFollow : AIBehavior
     private Vector2 distanceLerp(Vector2 start, Vector2 end, float distance)
     {
         return start + (end - start).normalized * distance;
+    }
+
+    public void slowDown(float speed)
+    {
+        arrive.setMaxSpeed(maxSpeed * speed);
     }
 }
