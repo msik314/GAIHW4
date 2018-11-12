@@ -27,6 +27,7 @@ public class FormationManager : MonoBehaviour
 	private Formation leaderFormation;
     private List<List<Formation>> subLeaders;
     private FormationType _formation;
+    private bool awoken = false;
     public FormationType formation{get{return _formation;} set{setFormation(value);}}
 
     void Start()
@@ -49,6 +50,16 @@ public class FormationManager : MonoBehaviour
                 subLeaders.Add(new List<Formation>());
             }
             subLeaders[i / 3].Add(current);
+        }
+
+        awoken = true;
+    }
+
+    void OnValidate()
+    {
+        if(awoken)
+        {
+            formation = startingFormation;
         }
     }
 
@@ -171,6 +182,7 @@ public class FormationManager : MonoBehaviour
 
     void setLeader()
     {
+        if(birds.Count == 0) return;
         leader = birds[0];
 		leaderFormation = leader.GetComponent<FormationBehavior>().getFormation();
 		leaderFormation.setLeader();
@@ -225,4 +237,6 @@ public class FormationManager : MonoBehaviour
     {
         return emergentSeparation;
     }
+
+
 }
